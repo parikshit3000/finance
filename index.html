@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        
+</head>
+
+<body>
+    <h1>Hello World</h1>
+    <div class="heading_form">
+        <form class="row gy-2 gx-3 align-items-center" onsubmit="return false;">
+            <div class="col-auto">
+                <label class="visually-hidden" for="autoSizingInput">Name</label>
+                <div class="input-group">
+                    <div class="input-group-text">Expense</div>
+                    <input type="text" class="form-control" id="exp" name="expense">
+                </div>
+            </div>
+            <div class="col-auto">
+                <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
+                <div class="input-group">
+                    <div class="input-group-text">Amount</div>
+                    <input type="number" class="form-control" id="amt" name="amount">
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <label class="visually-hidden" for="autoSizingSelect">Preference</label>
+                <select name="toexpense" class="form-select" id="autoSizingSelect">
+                    <option selected>Type of Expense...</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Professional">Professional</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <div class="col-auto">
+                <!-- <button type="submit" onClick="appendTable()" class="btn btn-outline-primary">Submit</button> -->
+                <button onclick="appendTable()" onsubmit="false" class="btn btn-outline-primary">Submit</button>
+            </div>
+        </form>
+        <!-- <button onclick="appendTable()" onsubmit="false" class="btn btn-outline-primary">Submit</button> -->
+
+    </div>
+
+    <div class="exp_table">
+        <table id="table" class="table">
+            <tr>
+                <th>Expense</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+    <script>
+        function appendTable() {
+            console.log("Function here");
+            var exp = document.getElementById("exp").value;
+            var amt = document.getElementById("amt").value;
+            var toexp = document.getElementById("autoSizingSelect").value;
+
+            var tb = document.getElementById("table");
+            var trow = document.createElement("tr");
+            var hello =  "<td>" + exp + "</td><td>" + amt + "</td><td>" + toexp + "</td>" + "<td><button onclick='appendTable()' class='btn btn-outline-primary'>Update</button></td>" + "<td><button type='button' class='btn btn-outline-danger'>Delete</button></td>";
+
+            trow.innerHTML = hello;
+            tb.appendChild(trow);
+
+            // xmlhttp request get
+            // post it thru xmlhttp
+            const tvalues = {
+                expense: exp,
+                amount: parseInt(amt),
+                toexpense: toexp,
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:3000/post", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    console.log("Ready State");
+                } 
+            }
+            xhr.send(JSON.stringify(tvalues));
+            alert("Item added to cart")
+        }
+    </script>
+</html>
